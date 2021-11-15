@@ -91,7 +91,34 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    visited = 0
+    first = Node(source, None, None)
+
+    notSeen = QueueFrontier()
+    notSeen.add(first)
+    seen = set()
+
+    while notSeen.empty()==False:
+        n = notSeen.remove()
+        neighbors = neighbors_for_person(n.state)
+        visited+=1
+        seen.add(n)
     
+        for movie, actor in neighbors:
+
+            if actor not in seen and not notSeen.contains_state(actor):
+                child = Node(actor, n, movie)
+                
+
+                if child.state==target:
+                    path = []
+                    while child.parent!=None:
+                        path.append((child.action,child.state))
+                        child = child.parent
+                    path.reverse()
+                    return path
+            
+                notSeen.add(child)
     
 
     # TODO
